@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import projectrastov.model.LettersJsonRepresentation;
 import projectrastov.services.LettersService;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -30,6 +28,7 @@ public class LettersController {
     public String home() {
         return "HOMYAK";
     }
+
     @GetMapping("favicon.ico")
     @ResponseBody
     void returnNoFavicon() {
@@ -37,11 +36,11 @@ public class LettersController {
 
     @GetMapping("/{letter}")
     public LettersJsonRepresentation greeting(@PathVariable String letter) {
-        String lst="";
-        if (dev){
-             lst = lettersService.getFileContentDev(letter);
-        }else{
-             lst = lettersService.getFileContent(letter);
+        String lst = "";
+        if (!dev) {
+            lst = lettersService.getFileContentDev(letter);
+        } else {
+            lst = lettersService.getFileContent(letter);
         }
         return new LettersJsonRepresentation(counter.incrementAndGet(), lst);
     }
